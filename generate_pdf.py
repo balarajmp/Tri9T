@@ -86,8 +86,8 @@ def create_approach_pdf(output_path):
         'CoverTitle',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=32,
-        leading=38,
+        fontSize=28,
+        leading=34,
         textColor=c_primary,
         alignment=TA_LEFT,
         spaceAfter=15
@@ -97,8 +97,8 @@ def create_approach_pdf(output_path):
         'CoverSubtitle',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=14,
-        leading=18,
+        fontSize=13,
+        leading=17,
         textColor=styles['Normal'].textColor,
         alignment=TA_LEFT,
         spaceAfter=40
@@ -109,8 +109,8 @@ def create_approach_pdf(output_path):
         parent=styles['Normal'],
         fontName='Helvetica',
         fontSize=10,
-        leading=14,
-        textColor=colors.HexColor("#64748B"),
+        leading=15,
+        textColor=colors.HexColor("#475569"),
         alignment=TA_LEFT
     )
 
@@ -118,10 +118,10 @@ def create_approach_pdf(output_path):
         'H1',
         parent=styles['Heading1'],
         fontName='Helvetica-Bold',
-        fontSize=20,
-        leading=24,
+        fontSize=18,
+        leading=22,
         textColor=c_primary,
-        spaceBefore=18,
+        spaceBefore=16,
         spaceAfter=10,
         keepWithNext=True
     )
@@ -130,11 +130,11 @@ def create_approach_pdf(output_path):
         'H2',
         parent=styles['Heading2'],
         fontName='Helvetica-Bold',
-        fontSize=14,
-        leading=18,
+        fontSize=13,
+        leading=16,
         textColor=c_secondary,
-        spaceBefore=14,
-        spaceAfter=8,
+        spaceBefore=12,
+        spaceAfter=6,
         keepWithNext=True
     )
 
@@ -142,10 +142,10 @@ def create_approach_pdf(output_path):
         'Body',
         parent=styles['BodyText'],
         fontName='Helvetica',
-        fontSize=10,
-        leading=14,
+        fontSize=9.5,
+        leading=13.5,
         textColor=c_text,
-        spaceAfter=8
+        spaceAfter=6
     )
     
     style_body_bold = ParagraphStyle(
@@ -159,29 +159,29 @@ def create_approach_pdf(output_path):
         parent=style_body,
         leftIndent=20,
         firstLineIndent=-10,
-        spaceAfter=5
+        spaceAfter=4
     )
     
     style_code = ParagraphStyle(
         'CodeStyle',
         parent=styles['Normal'],
         fontName='Courier',
-        fontSize=8,
-        leading=10,
+        fontSize=7.5,
+        leading=9.5,
         textColor=colors.HexColor("#0F172A"),
         backColor=c_bg_light,
         borderColor=c_border,
         borderWidth=0.5,
-        borderPadding=6,
-        spaceAfter=10
+        borderPadding=5,
+        spaceAfter=8
     )
     
     style_table_header = ParagraphStyle(
         'TableHeaderText',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=9,
-        leading=12,
+        fontSize=8.5,
+        leading=11,
         textColor=colors.white
     )
     
@@ -189,8 +189,8 @@ def create_approach_pdf(output_path):
         'TableCellText',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.5,
-        leading=11,
+        fontSize=8,
+        leading=10,
         textColor=c_text
     )
 
@@ -198,7 +198,7 @@ def create_approach_pdf(output_path):
 
     # ================= PAGE 1: COVER PAGE =================
     story.append(Spacer(1, 120))
-    story.append(Paragraph("Tri9T", style_cover_title))
+    story.append(Paragraph("Engineering Approach & System Design Document", style_cover_title))
     story.append(Paragraph("Document Versioning, Ingestion, and Verification Engine", style_cover_subtitle))
     
     # Colored accent bar
@@ -214,9 +214,8 @@ def create_approach_pdf(output_path):
     
     # Metadata block
     meta_text = """
-    <b>Prepared by:</b> Tri9T Backend Engineering Team<br/>
-    <b>Status:</b> Production Verified<br/>
-    <b>Document Version:</b> 1.0.0<br/>
+    <b>Prepared by:</b> Balaraj M P, BE Information Science and Engineering, CMR Institute of Technology<br/>
+    <b>Status:</b> Final Submission<br/>
     <b>Target Platform:</b> FastAPI + SQLite / MongoDB & Gemini LLM Pipeline<br/>
     <b>Date:</b> July 2026
     """
@@ -230,16 +229,19 @@ def create_approach_pdf(output_path):
     toc_data = [
         [Paragraph("1. Executive Summary & System Architecture", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 3", style_body_bold)],
         [Paragraph("2. Relational Database Schema", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 3", style_body_bold)],
-        [Paragraph("3. PDF Parsing & Hierarchy Reconstruction", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 4", style_body_bold)],
+        [Paragraph("3. PDF Ingestion & Hierarchy Reconstruction", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 4", style_body_bold)],
         [Paragraph("4. Parser Edge Cases & Mitigations", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 4", style_body_bold)],
-        [Paragraph("5. Document Versioning & Matching Strategy", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 5", style_body_bold)],
-        [Paragraph("6. Stale Traceability & Content Hash Detection", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 5", style_body_bold)],
-        [Paragraph("7. LLM QA Generation & Retry Strategy", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 6", style_body_bold)],
-        [Paragraph("8. Technical Decision Log", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 7", style_body_bold)],
-        [Paragraph("9. Known Limitations & Future Improvements", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 7", style_body_bold)],
+        [Paragraph("5. Validation Methodology", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 5", style_body_bold)],
+        [Paragraph("6. Document Versioning & Matching Strategy", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 5", style_body_bold)],
+        [Paragraph("7. Selection Management", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 6", style_body_bold)],
+        [Paragraph("8. Structured LLM Generation & Pydantic Validation", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 6", style_body_bold)],
+        [Paragraph("9. Stale Traceability Detection", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 6", style_body_bold)],
+        [Paragraph("10. API Endpoint Documentation", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 7", style_body_bold)],
+        [Paragraph("11. Unit Tests & Verification", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 8", style_body_bold)],
+        [Paragraph("12. Technical Decision Log", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 8", style_body_bold)],
+        [Paragraph("13. Known Limitations & Future Improvements", style_body_bold), Paragraph(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .", style_body), Paragraph("Page 8", style_body_bold)],
     ]
     
-    # 504 total printable width: 140 width for title, 314 for dots, 50 for page
     toc_table = Table(toc_data, colWidths=[180, 264, 60])
     toc_table.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
@@ -253,7 +255,7 @@ def create_approach_pdf(output_path):
     
     story.append(Paragraph("System Overview", style_h2))
     overview_text = """
-    Tri9T is a production-grade automated verification platform designed to ingest complex technical PDF manuals, 
+    Tri9T is a professional automated verification platform designed to ingest complex technical PDF manuals, 
     reconstruct their hierarchical outline structure, and manage logical node revisions over time. 
     It enables QA test engineers to highlight specific sections of a manual, generate 3-5 high-fidelity test cases 
     using Gemini LLM structured outputs, and automatically trace the staleness of these test cases as updated 
@@ -275,7 +277,7 @@ def create_approach_pdf(output_path):
     story.append(Paragraph(arch_bullet_1, style_bullet))
     story.append(Paragraph(arch_bullet_2, style_bullet))
     story.append(Paragraph(arch_bullet_3, style_bullet))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 10))
     
     story.append(Paragraph("2. Relational Database Schema", style_h1))
     db_text = """
@@ -291,7 +293,7 @@ def create_approach_pdf(output_path):
         [Paragraph("documents", style_table_cell), Paragraph("id (PK), name", style_table_cell), Paragraph("Represents the root document profile.", style_table_cell)],
         [Paragraph("document_versions", style_table_cell), Paragraph("id (PK), document_id (FK), version_number, commit_message", style_table_cell), Paragraph("Captures a specific manual revision or upload transaction.", style_table_cell)],
         [Paragraph("logical_nodes", style_table_cell), Paragraph("id (PK), uuid, document_id (FK)", style_table_cell), Paragraph("Stable anchor representing a structural node across all document versions.", style_table_cell)],
-        [Paragraph("node_versions", style_table_cell), Paragraph("id (PK), logical_node_id (FK), document_version_id (FK), title, content, content_hash", style_table_cell), Paragraph("Holds the actual text content, title, and SHA-256 hash of a node under a specific version.", style_table_cell)],
+        [Paragraph("node_versions", style_table_cell), Paragraph("id (PK), logical_node_id (FK), document_version_id (FK), parent_logical_node_id (FK), title, content, content_hash", style_table_cell), Paragraph("Holds the actual text content, title, and SHA-256 hash of a node under a specific version.", style_table_cell)],
         [Paragraph("selections", style_table_cell), Paragraph("id (PK), document_version_id (FK), name", style_table_cell), Paragraph("A user-selected subset of logical nodes pinned to a document version.", style_table_cell)],
         [Paragraph("generated_test_cases", style_table_cell), Paragraph("id (PK), selection_id (FK), question, answer, reference_context", style_table_cell), Paragraph("Stores the validated, LLM-generated QA test cases linked to a selection.", style_table_cell)],
         [Paragraph("llm_generation_failures", style_table_cell), Paragraph("id (PK), selection_id (FK), raw_response, error_message", style_table_cell), Paragraph("Logs failed LLM outputs and schema validation errors for audits.", style_table_cell)],
@@ -302,62 +304,45 @@ def create_approach_pdf(output_path):
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_bg_light]),
-        ('TOPPADDING', (0,0), (-1,-1), 6),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(schema_table)
     story.append(PageBreak())
 
     # ================= PAGE 4: PDF PARSING & EDGE CASES =================
-    story.append(Paragraph("3. PDF Parsing & Hierarchy Reconstruction", style_h1))
+    story.append(Paragraph("3. PDF Ingestion & Hierarchy Reconstruction", style_h1))
     parsing_intro = """
-    Parsing complex layout specifications (like the CT200 user manual) requires a five-step extraction pipeline:
+    Parsing complex layout specifications (like the CT200 user manual) requires a five-step extraction pipeline. 
+    The core classes implemented inside <i>app/services/pdf_parser.py</i> are <b>LayoutAnalyzer</b>, <b>TableDetector</b>, 
+    <b>BlockClassifier</b>, and <b>HierarchyBuilder</b>.
     """
     story.append(Paragraph(parsing_intro, style_body))
     
-    story.append(Paragraph("<b>Step 1: Raw Page Extraction & OCR Fallback</b>", style_body_bold))
+    story.append(Paragraph("<b>Spatial Bounding Box Filtering for Table Content Duplication</b>", style_body_bold))
     p_step1 = """
-    Pages are extracted using PyMuPDF. If a page yields no digital characters (indicating a scanned image), 
-    the system renders the page to a 150 DPI image and runs Tesseract OCR (pytesseract) to retrieve page text.
+    The initial implementation duplicated table contents: cell text was parsed as tabular grids and also extracted 
+    independently as standard text paragraphs. After visual verification, the <b>LayoutAnalyzer</b> was updated with bounding-box 
+    filtering. The system computes the spatial center of every text block. If that center falls within the bounding box of 
+    a detected table, the block is dropped from the paragraph stream, ensuring table cells are not duplicated.
     """
     story.append(Paragraph(p_step1, style_body))
     
-    story.append(Paragraph("<b>Step 2: Table Isolation</b>", style_body_bold))
-    p_step2 = """
-    PyMuPDF's table extraction locates cells. The TableDetector resolves overlapping or nested bounding boxes 
-    by preserving only the largest enclosing table frame. Rows are formatted into clean Markdown grids.
-    """
-    story.append(Paragraph(p_step2, style_body))
-
-    story.append(Paragraph("<b>Step 3: Geometry & Reading Order Alignment</b>", style_body_bold))
-    p_step3 = """
-    LayoutAnalyzer merges text blocks and tables. It discards any text block falling inside table boundaries 
-    (to prevent duplicate table content extraction) and sorts all remaining elements top-to-bottom.
-    """
-    story.append(Paragraph(p_step3, style_body))
-
-    story.append(Paragraph("<b>Step 4: Classification & Outline Stack Builder</b>", style_body_bold))
-    p_step4 = """
-    BlockClassifier identifies headings (dot-separated keys e.g. '2.1.1.1' or numbers like '1.'), lists, 
-    and paragraphs. HierarchyBuilder merges paragraphs split across page boundaries and reconstructs the outline tree 
-    using an ancestor tracking stack. Mismatched headings emit warnings without silently assigning faulty parents.
-    """
-    story.append(Paragraph(p_step4, style_body))
-    story.append(Spacer(1, 10))
-
     story.append(Paragraph("4. Parser Edge Cases & Mitigations", style_h1))
     
     edge_cases = [
         [Paragraph("<b>Edge Case Scenario</b>", style_table_header), Paragraph("<b>Pipeline Mitigation Strategy</b>", style_table_header)],
         [Paragraph("<b>Missing intermediate headings</b><br/>E.g. heading 3.1.2 appears but 3.1 was skipped.", style_table_cell), 
-         Paragraph("The HierarchyBuilder detects the missing parent key, raises a <i>Hierarchy mismatch</i> warning, and attaches the node to the longest matched prefix (e.g. heading 3.0 or root) to preserve order.", style_table_cell)],
+         Paragraph("The HierarchyBuilder detects the missing parent key, raises a hierarchy mismatch warning, and attaches the node to the longest matched prefix (e.g. heading 3.0 or root) to preserve order.", style_table_cell)],
         [Paragraph("<b>Page-boundary text split</b><br/>A paragraph breaks across page bounds.", style_table_cell), 
          Paragraph("Parser checks if the next block starts with a lowercase letter, a hyphen, or a list marker, automatically merging it into the previous paragraph block.", style_table_cell)],
         [Paragraph("<b>Duplicate headings</b><br/>Multiple headings share a key or name.", style_table_cell), 
          Paragraph("The system maintains local counters for each heading path and appends a duplicate suffix (<i>_dup[count]</i>) to enforce unique, stable logical signatures in the database.", style_table_cell)],
         [Paragraph("<b>Table text duplicate extraction</b><br/>Standard readers extract cell text twice.", style_table_cell), 
          Paragraph("The LayoutAnalyzer performs a spatial boundary check. If a text block's coordinate center falls within the bounding box of a detected table, it is dropped from the text stream.", style_table_cell)],
+        [Paragraph("<b>Ordered list headings mismatch</b><br/>Numbered list items match heading patterns.", style_table_cell), 
+         Paragraph("List items starting with numbering are filtered out from being headings if they exceed 80 characters, contain colons, or contain internal newlines.", style_table_cell)]
     ]
     
     edge_table = Table(edge_cases, colWidths=[180, 324])
@@ -365,15 +350,35 @@ def create_approach_pdf(output_path):
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_bg_light]),
-        ('TOPPADDING', (0,0), (-1,-1), 6),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
     story.append(edge_table)
     story.append(PageBreak())
 
-    # ================= PAGE 5: DOCUMENT VERSIONING & STALENESS =================
-    story.append(Paragraph("5. Document Versioning & Matching Strategy", style_h1))
+    # ================= PAGE 5: VALIDATION & VERSIONING =================
+    story.append(Paragraph("5. Validation Methodology", style_h1))
+    val_text = """
+    To verify that PDF parsing, table extraction, hierarchy builders, and version comparisons work correctly, the system incorporates the following checks:
+    """
+    story.append(Paragraph(val_text, style_body))
+    
+    val_1 = """<b>• Manual Outline Comparison:</b> Directly compared output JSON outline structures against the visual hierarchy of the source PDF files."""
+    val_2 = """<b>• Visual Layout Analysis:</b> Rendered page blocks to verify correct column reading order and header/footer exclusion."""
+    val_3 = """<b>• Hierarchy Verification:</b> Validated that sub-sections (e.g., 2.1.1.1) are correctly structured as children of 2.1.1, throwing warnings on mismatches."""
+    val_4 = """<b>• Table and List Verification:</b> Verified cell alignment in pipe format and confirmed ordered list items do not pollute headings."""
+    val_5 = """<b>• Version Match Audits:</b> Tested version diffing endpoints to verify they capture unchanged, modified, added, and removed nodes correctly."""
+    val_6 = """<b>• Pytest Suite:</b> Isolated unit tests assert every pipeline class (LayoutAnalyzer, TableDetector, BlockClassifier, HierarchyBuilder) against synthetic inputs."""
+    story.append(Paragraph(val_1, style_bullet))
+    story.append(Paragraph(val_2, style_bullet))
+    story.append(Paragraph(val_3, style_bullet))
+    story.append(Paragraph(val_4, style_bullet))
+    story.append(Paragraph(val_5, style_bullet))
+    story.append(Paragraph(val_6, style_bullet))
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("6. Document Versioning & Matching Strategy", style_h1))
     version_text = """
     A key design requirement is recognizing logically identical nodes when a new document version is ingested. 
     Rather than performing character-based text alignment, the system maps outline nodes based on structural path signatures.
@@ -404,47 +409,25 @@ def create_approach_pdf(output_path):
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_bg_light]),
-        ('TOPPADDING', (0,0), (-1,-1), 5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(matrix_table)
-    story.append(Spacer(1, 20))
-
-    story.append(Paragraph("6. Stale Traceability & Content Hash Detection", style_h1))
-    stale_text = """
-    A user's selection contains reference text pinned to specific logical nodes. When a new version of the manual 
-    is ingested, the system traces the selection validity by examining the state of the referenced nodes:
-    """
-    story.append(Paragraph(stale_text, style_body))
-    
-    stale_bullet_1 = """<b>• Fresh:</b> All selected logical nodes exist in the new version, and their content hashes (SHA-256) are identical to the source version."""
-    stale_bullet_2 = """<b>• Possibly Stale:</b> All selected logical nodes exist in the new version, but the content hash of one or more nodes has changed (text updated)."""
-    stale_bullet_3 = """<b>• Stale:</b> One or more of the selected logical nodes are entirely absent in the new version (the section was deleted)."""
-    story.append(Paragraph(stale_bullet_1, style_bullet))
-    story.append(Paragraph(stale_bullet_2, style_bullet))
-    story.append(Paragraph(stale_bullet_3, style_bullet))
-    
-    stale_warn = """
-    <i>Note on Hash-based Limits:</i> Content hashing is sensitive to character-level edits. Cosmetic corrections 
-    (such as changing 'Safety Guidelines' to 'Safety Guideline') trigger a 'Possibly Stale' flag, even though 
-    the underlying QA test cases remain semantically valid (False Positives).
-    """
-    story.append(Paragraph(stale_warn, style_body))
     story.append(PageBreak())
 
-    # ================= PAGE 6: LLM & RETRY PIPELINE =================
-    story.append(Paragraph("7. LLM QA Generation & Retry Strategy", style_h1))
-    llm_intro = """
-    The LLM integration transforms selection snippets into functional QA test cases. To guarantee safety and structure, 
-    the generation pipeline is designed with strict boundaries:
+    # ================= PAGE 6: SELECTIONS & LLM PIPELINE =================
+    story.append(Paragraph("7. Selection Management", style_h1))
+    sel_text = """
+    Users select logical nodes to pin baseline requirements.
+    The primary routes are <b>POST /api/v1/selection</b> and <b>GET /api/v1/selection/{id}</b>.
+    Selections remain <b>immutable</b> because they reference a specific <i>document_version_id</i> and the text content of those nodes at that time, protecting baselines from source manual modifications.
     """
-    story.append(Paragraph(llm_intro, style_body))
-
-    story.append(Paragraph("Structured Output JSON Validation", style_h2))
+    story.append(Paragraph(sel_text, style_body))
+    
+    story.append(Paragraph("8. Structured LLM Generation & Pydantic Validation", style_h1))
     llm_validation = """
-    The Gemini model is prompted to act as a Senior QA Automation Engineer. It is provided with the text context 
-    and instructed to return a structured JSON response matching the following JSON Schema:
+    The Gemini model is prompted to act as a Senior QA Automation Engineer, receiving context and returning structured JSON matching a Pydantic schema:
     """
     story.append(Paragraph(llm_validation, style_body))
     
@@ -463,79 +446,109 @@ def create_approach_pdf(output_path):
       "type": "array"
     }
   },
-  "required": ["test_cases"],
-  "type": "object"
+  "required": ["test_cases"]
 }"""
     story.append(Preformatted(schema_code, style_code))
     
-    story.append(Paragraph("Retry and Audit Execution Flow", style_h2))
     retry_text = """
-    LLM outputs are cleaned of markdown formatting markers (like triple-backtick 'json') and parsed. 
-    If a JSON parsing failure or a Pydantic schema validation error occurs, the system triggers <b>exactly one retry</b>. 
-    If the retry also fails, the system logs the raw response and error string to the <i>llm_generation_failures</i> 
-    table and returns an HTTP 422 error, providing transparency and audit capability.
+    The system strips markdown formatting and validates the JSON structure. If validation fails, it executes <b>exactly one retry</b>. 
+    If that also fails, the details are logged to <i>llm_generation_failures</i>, and an HTTP 422 error is returned.
     """
     story.append(Paragraph(retry_text, style_body))
     
-    # Prompt Template box
-    prompt_temp = """<b>Example System Instruction Prompt:</b>
-You are a Senior QA Test Engineer. Generate 3-5 QA test cases directly based on the selected text.
-Provide accurate factual answers derived ONLY from the provided text context. 
-Your output MUST be a JSON object conforming to the QAGenerationResponse schema.
-Do not include any conversational filler or preambles outside the JSON block."""
-    story.append(Paragraph(prompt_temp, style_code))
+    story.append(Paragraph("9. Stale Traceability Detection", style_h1))
+    trace_text = """
+    Upon manual revision ingestion, selection status is computed:
+    """
+    story.append(Paragraph(trace_text, style_body))
+    tb_1 = """<b>• Fresh:</b> All selected logical nodes exist in the target version, and their content hashes (SHA-256) match."""
+    tb_2 = """<b>• Possibly stale:</b> All selected nodes exist, but at least one node has a different content hash."""
+    tb_3 = """<b>• Stale:</b> One or more selected nodes are completely missing (deleted) in the new version."""
+    story.append(Paragraph(tb_1, style_bullet))
+    story.append(Paragraph(tb_2, style_bullet))
+    story.append(Paragraph(tb_3, style_bullet))
+    
+    stale_lims = """
+    <b>Limitations of Hash Detection:</b> Hashing triggers false positives on minor cosmetic changes (spacing/punctuation), 
+    misses semantic re-ordering context (false negatives), and is blind to sibling or parent heading updates.
+    """
+    story.append(Paragraph(stale_lims, style_body))
     story.append(PageBreak())
 
-    # ================= PAGE 7: DECISION LOG & FUTURE =================
-    story.append(Paragraph("8. Technical Decision Log", style_h1))
+    # ================= PAGE 7: API ENDPOINT DOCUMENTATION =================
+    story.append(Paragraph("10. API Endpoint Documentation", style_h1))
     
-    # Question 1
-    story.append(Paragraph("<b>Q1: How does the system handle structural changes between versions?</b>", style_body_bold))
-    q1_answer = """
-    <b>Answer:</b> The system separates structural outline mapping from content payloads. Outline nodes are assigned stable 
-    UUIDs on their first ingestion. Subsequent uploads resolve nodes against their parent outline paths (signatures) 
-    rather than absolute coordinates or index lines. This isolates structural shifts (e.g. moving a section) from 
-    content edits, allowing precise version history tracking.
-    """
-    story.append(Paragraph(q1_answer, style_body))
-    story.append(Spacer(1, 10))
-
-    # Question 2
-    story.append(Paragraph("<b>Q2: Why was SQLite and SQL Schema chosen?</b>", style_body_bold))
-    q2_answer = """
-    <b>Answer:</b> The core requirements—document outlines, logical anchors, selection nodes, test cases, and audit trails—are 
-    highly relational. A normalized SQL schema (using SQLAlchemy and SQLite with aiosqlite) enforces strict integrity, 
-    provides clean join operations, and requires zero external daemon setup. This makes development, integration testing, 
-    and local setups lightweight and reproducible. MongoDB is integrated in parallel as a secondary store for raw document layouts.
-    """
-    story.append(Paragraph(q2_answer, style_body))
-    story.append(Spacer(1, 10))
-
-    # Question 3
-    story.append(Paragraph("<b>Q3: How is LLM integration validation structured?</b>", style_body_bold))
-    q3_answer = """
-    <b>Answer:</b> Raw LLM responses are parsed dynamically, stripped of markdown formatting blocks, and validated 
-    using Pydantic models. A double-attempt execution path retries failures immediately. Persistent validation 
-    failures are captured in the database (llm_generation_failures) rather than being silently dropped.
-    """
-    story.append(Paragraph(q3_answer, style_body))
-    story.append(Spacer(1, 10))
-
-    story.append(Paragraph("9. Known Limitations & Future Improvements", style_h1))
+    # GET /documents
+    story.append(Paragraph("<b>GET /api/v1/documents</b>", style_body_bold))
+    story.append(Paragraph("• <i>Purpose:</i> Lists all ingested SQL documents.", style_body))
+    story.append(Paragraph("• <i>Response:</i> <code>[{\"id\":1, \"name\":\"ct200_manual.pdf\"}]</code>", style_body))
     
-    story.append(Paragraph("<b>Known Limitations:</b>", style_body_bold))
-    lim_1 = """<b>• Over-Sensitivity (False Positives):</b> Minor typo or spacing changes alter the content hash, marking selections as 'Possibly Stale' even if the test cases remain valid."""
-    lim_2 = """<b>• Out-of-Selection Context Blindness:</b> If a sibling warning changes but the selected node remains identical, the selection status remains 'Fresh' despite potential semantic conflicts."""
-    story.append(Paragraph(lim_1, style_bullet))
-    story.append(Paragraph(lim_2, style_bullet))
+    # GET /versions
+    story.append(Paragraph("<b>GET /api/v1/versions</b>", style_body_bold))
+    story.append(Paragraph("• <i>Purpose:</i> List all document versions. Supports <code>document_id</code> filter. (Note: <code>GET /documents/{version}</code> is not implemented directly; instead versions are browsed using <code>GET /api/v1/versions?document_id={id}</code>).", style_body))
+    story.append(Paragraph("• <i>Response:</i> <code>[{\"id\":1, \"version_number\":1, \"commit_message\":\"Import\"}]</code>", style_body))
     
-    story.append(Paragraph("<b>Future Improvements:</b>", style_body_bold))
-    imp_1 = """<b>• Semantic Similarity Scoring:</b> Calculate cosine similarity between text embeddings of original and new sections. Flag changes below 0.98 similarity as modified, ignoring minor typo fixes."""
-    imp_2 = """<b>• AST & Relative Outline Hashing:</b> Hash the node's relative parent signature path along with the text. If a section is reordered, the selection status shifts to 'Possibly Stale' automatically."""
-    imp_3 = """<b>• Auto-Repair Pipeline:</b> Add an LLM worker that parses 'Possibly Stale' selections and auto-corrects QA test cases to match the newly ingested version."""
-    story.append(Paragraph(imp_1, style_bullet))
-    story.append(Paragraph(imp_2, style_bullet))
-    story.append(Paragraph(imp_3, style_bullet))
+    # GET /nodes/{id}
+    story.append(Paragraph("<b>GET /api/v1/nodes/{id}</b>", style_body_bold))
+    story.append(Paragraph("• <i>Purpose:</i> Fetch details and historical node versions of a logical node by UUID.", style_body))
+    story.append(Paragraph("• <i>Response:</i> <code>{\"id\":5, \"uuid\":\"abc-123\", \"node_versions\":[{\"id\":12, \"title\":\"Battery Life\"}]}</code>", style_body))
+    
+    # GET /search
+    story.append(Paragraph("<b>GET /api/v1/search?q={query}</b>", style_body_bold))
+    story.append(Paragraph("• <i>Purpose:</i> Performs search across outline nodes' contents.", style_body))
+    
+    # POST /selection & GET /selection/{id}
+    story.append(Paragraph("<b>POST /api/v1/selection</b> & <b>GET /api/v1/selection/{id}</b>", style_body_bold))
+    story.append(Paragraph("• <i>Purpose:</i> Create and retrieve selection sets. Selection route prefixes are singular in the implementation.", style_body))
+    story.append(Paragraph("• <i>Request Payload:</i> <code>{\"name\":\"Specs\", \"document_version_id\":1, \"nodes\":[{\"node_id\":\"abc-123\"}]}</code>", style_body))
+    
+    # GET /generation/{selection_id} & GET /generation/node/{node_id}
+    story.append(Paragraph("<b>GET /api/v1/generation/{selection_id}</b> & <b>GET /api/v1/generation/node/{node_id}</b>", style_body_bold))
+    story.append(Paragraph("• <i>Purpose:</i> Retrieve generated test cases, versioning details, staleness status, and diff summaries. Prefix routes are singular in the implementation.", style_body))
+    story.append(Paragraph("• <i>Response:</i> <code>{\"selection_id\":1, \"staleness_status\":\"Possibly stale\", \"test_cases\":[...]}</code>", style_body))
+    
+    story.append(PageBreak())
+
+    # ================= PAGE 8: TESTS, DECISION LOG & LIMITATIONS =================
+    story.append(Paragraph("11. Unit Tests & Verification", style_h1))
+    test_intro = """
+    The test suite verified:
+    <b>• Deep Hierarchy:</b> Section 2.1.1.1 structures as a fourth-level child node (<i>test_heading_2_1_1_1_becomes_fourth_level_node</i>).
+    <b>• Duplicate Headings:</b> Identical titles (Overview) produce unique stable keys and logical node UUIDs (<i>test_two_headings_with_identical_titles_produce_different_node_ids</i>).
+    <b>• Reading Order:</b> Sections occurring out-of-order (3.4 before 3.3) preserve input reading sequence (<i>test_heading_3_4_appearing_before_3_3_preserves_reading_order</i>).
+    <b>• Tables & Lists:</b> Verified Markdown pipe output and ensured ordered lists are not classified as headings.
+    """
+    story.append(Paragraph(test_intro, style_body))
+    
+    story.append(Paragraph("12. Technical Decision Log", style_h1))
+    
+    story.append(Paragraph("<b>Q1: What is the one part of this system most likely to silently give wrong results without erroring? How would you detect it?</b>", style_body_bold))
+    q1_a = """
+    <b>Answer:</b> The layout sorting and block classification. If bounding boxes are slightly off, the reader might sort sentences out of order or classify a heading as list text. It executes fine, but the hierarchy is corrupt.
+    <i>Detection:</i> Render PDFs with debug overlay boxes (color-coded by classified block type), run structural sequence alerts (e.g. 2.1.2 followed by 2.1.9), and monitor text lengths statistically.
+    """
+    story.append(Paragraph(q1_a, style_body))
+    
+    story.append(Paragraph("<b>Q2: Where did you choose simplicity over correctness because of time? What would break first if this went to production?</b>", style_body_bold))
+    q2_a = """
+    <b>Answer:</b> Stable logical node signature matching. We use path signatures like <i>heading:2.1 > leaf:2.1_paragraph_1</i>. 
+    <i>Production Failure:</i> If a new paragraph is inserted at the start of a section, all downstream siblings shift indexes, losing their logical identity. They are flagged as 'Removed'/'Added', causing their test cases to report 'Stale' falsely.
+    """
+    story.append(Paragraph(q2_a, style_body))
+    
+    story.append(Paragraph("<b>Q3: Name one input (parser, version matcher, or LLM call) that your implementation does NOT handle. What happens when it encounters it?</b>", style_body_bold))
+    q3_a = """
+    <b>Answer:</b> Multipage spanning tables and nested sub-tables.
+    <i>Encounter behavior:</i> The TableDetector treats the table segments on subsequent pages as independent tables under their respective parent headings. Nested tables output malformed pipe markdown, cluttering structural text.
+    """
+    story.append(Paragraph(q3_a, style_body))
+    
+    story.append(Paragraph("13. Known Limitations & Future Improvements", style_h1))
+    lims_imp = """
+    <b>• Known Limitations:</b> Cosmetic changes trigger false-positive staleness reports; out-of-selection context modifications (parent updates) are missed.<br/>
+    <b>• Future Improvements:</b> Calculate cosine similarity of embeddings to filter out cosmetic updates; compute relative outline hashes to detect hierarchy shifts; run LLM workers to auto-repair stale QA cases.
+    """
+    story.append(Paragraph(lims_imp, style_body))
 
     # Build the document
     doc.build(story, canvasmaker=NumberedCanvas)
