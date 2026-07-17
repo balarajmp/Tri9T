@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.api.deps import get_document_service
+from app.api.deps import get_document_service, get_version_comparison_service, get_db_session
 from app.schemas.document import DocumentCreate, DocumentResponse, DocumentUpdate
+from app.schemas.version_comparison import VersionComparisonResponse
 from app.services.document_service import DocumentService
+from app.services.version_comparison import VersionComparisonService
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Any
 
 router = APIRouter()
 
@@ -70,3 +74,20 @@ async def delete_document(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Document record with ID {document_id} not found"
         )
+
+
+@router.get("/versions/{v1_id}/compare/{v2_id}", response_model=VersionComparisonResponse)
+async def compare_document_versions(
+    v1_id: int,
+    v2_id: int,
+    db: AsyncSession = Depends(get_db_session),
+    comparison_service: VersionComparisonService = Depends(get_version_comparison_service)
+) -> Any:
+    """Compare two document versions and detect unchanged, modified, added, and removed nodes."""
+    res = await comparison_service.compare_document_versions(db, v1_id, v2_id)
+    if "error" in res:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=res["error"]
+        )
+    return res
