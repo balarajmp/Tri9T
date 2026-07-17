@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from typing import Any
+from typing import Any, Optional
 
 from app.api.deps import get_db_session
 from app.models.sql.document import DocumentVersion
@@ -10,6 +10,7 @@ from app.models.sql.node import LogicalNode, NodeVersion
 from app.models.sql.selection import Selection, SelectionNode
 from app.schemas.selection import SelectionCreate, SelectionResponse, SelectionNodeResponse
 from app.schemas.qa_generation import QAGenerationResponse
+from app.schemas.traceability import TraceabilityResponse
 
 router = APIRouter()
 
@@ -214,4 +215,19 @@ async def generate_qa_test_cases(
     """
     from app.services.llm_generation import generate_qa_for_selection
     return await generate_qa_for_selection(selection_id=id, db=db)
+
+
+@router.get("/selection/{id}/traceability", response_model=TraceabilityResponse)
+async def check_selection_traceability(
+    id: int,
+    target_version_id: Optional[int] = None,
+    db: AsyncSession = Depends(get_db_session)
+) -> Any:
+    """
+    Check the traceability status of a selection (Fresh, Possibly stale, Stale)
+    against a target document version or the latest version of the same document.
+    """
+    from app.services.traceability import check_traceability
+    return await check_traceability(selection_id=id, target_version_id=target_version_id, db=db)
+
 
