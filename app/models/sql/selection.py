@@ -7,6 +7,7 @@ from app.core.database import Base
 if TYPE_CHECKING:
     from app.models.sql.document import DocumentVersion
     from app.models.sql.node import LogicalNode
+    from app.models.sql.generated_test_case import GeneratedTestCase
 
 
 class Selection(Base):
@@ -29,6 +30,9 @@ class Selection(Base):
     document_version: Mapped["DocumentVersion"] = relationship("DocumentVersion", back_populates="selections")
     selection_nodes: Mapped[list["SelectionNode"]] = relationship(
         "SelectionNode", back_populates="selection", cascade="all, delete-orphan"
+    )
+    generated_test_cases: Mapped[list["GeneratedTestCase"]] = relationship(
+        "GeneratedTestCase", back_populates="selection", cascade="all, delete-orphan"
     )
 
 

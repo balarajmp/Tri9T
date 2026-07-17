@@ -5,6 +5,7 @@ from app.models.sql.document import Document, DocumentVersion
 from app.models.sql.node import LogicalNode, NodeVersion
 from app.models.sql.selection import Selection, SelectionNode
 from app.models.sql.llm_failure import LLMGenerationFailure
+from app.models.sql.generated_test_case import GeneratedTestCase
 
 __all__ = [
     "Base",
@@ -17,5 +18,6 @@ __all__ = [
     "Selection",
     "SelectionNode",
     "LLMGenerationFailure",
+    "GeneratedTestCase",
 ]
 

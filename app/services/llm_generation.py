@@ -200,6 +200,24 @@ async def generate_qa_for_selection(
 
             # Validate against Pydantic schema
             validated = QAGenerationResponse.model_validate(parsed)
+
+            # Delete any existing generated test cases for this selection (to allow clean overwrite)
+            from app.models.sql.generated_test_case import GeneratedTestCase
+            from sqlalchemy import delete
+            stmt_del = delete(GeneratedTestCase).where(GeneratedTestCase.selection_id == selection_id)
+            await db.execute(stmt_del)
+
+            # Persist the newly generated test cases
+            for case in validated.test_cases:
+                gtc = GeneratedTestCase(
+                    selection_id=selection_id,
+                    question=case.question,
+                    answer=case.answer,
+                    reference_context=case.reference_context
+                )
+                db.add(gtc)
+            await db.commit()
+
             return validated
 
         except (json.JSONDecodeError, KeyError, ValueError, Exception) as e:
