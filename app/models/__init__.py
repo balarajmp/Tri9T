@@ -4,6 +4,7 @@ from app.models.nosql.document import DocumentRecord
 from app.models.sql.document import Document, DocumentVersion
 from app.models.sql.node import LogicalNode, NodeVersion
 from app.models.sql.selection import Selection, SelectionNode
+from app.models.sql.llm_failure import LLMGenerationFailure
 
 __all__ = [
     "Base",
@@ -15,5 +16,6 @@ __all__ = [
     "NodeVersion",
     "Selection",
     "SelectionNode",
+    "LLMGenerationFailure",
 ]
 

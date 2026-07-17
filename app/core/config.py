@@ -1,5 +1,5 @@
 import os
-from typing import Literal
+from typing import Literal, Optional
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -25,6 +25,10 @@ class Settings(BaseSettings):
     # MongoDB Settings
     MONGODB_URL: str = "mongodb://localhost:27017"
     MONGODB_DB_NAME: str = "tri9t_db"
+
+    # LLM Settings
+    GEMINI_API_KEY: Optional[str] = None
+    OPENAI_API_KEY: Optional[str] = None
 
     @field_validator("SQLITE_DB_URL")
     @classmethod

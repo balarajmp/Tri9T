@@ -9,6 +9,7 @@ from app.models.sql.document import DocumentVersion
 from app.models.sql.node import LogicalNode, NodeVersion
 from app.models.sql.selection import Selection, SelectionNode
 from app.schemas.selection import SelectionCreate, SelectionResponse, SelectionNodeResponse
+from app.schemas.qa_generation import QAGenerationResponse
 
 router = APIRouter()
 
@@ -200,3 +201,17 @@ async def get_selection(
         updated_at=selection.updated_at,
         nodes=nodes_response
     )
+
+
+@router.post("/selection/{id}/qa", response_model=QAGenerationResponse)
+async def generate_qa_test_cases(
+    id: int,
+    db: AsyncSession = Depends(get_db_session)
+) -> Any:
+    """
+    Generate 3 to 5 QA test cases from the text context of a selection.
+    Uses structured output with validation, retrying on validation failures and logging errors.
+    """
+    from app.services.llm_generation import generate_qa_for_selection
+    return await generate_qa_for_selection(selection_id=id, db=db)
+
