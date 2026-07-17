@@ -317,55 +317,166 @@ class HierarchyBuilder:
     Merges paragraphs split across page boundaries, groups consecutive list 
     items of the same type into a unified Markdown list block, and builds 
     a nested tree structure based on heading hierarchy.
+    
+    Ensures that parent-child relationships are inferred correctly and robustly.
+    Never silently attaches nodes to incorrect parents.
+    If hierarchy cannot be determined confidently (due to gaps or numbering mismatches),
+    emits a warning instead of guessing.
+    Supports unlimited heading depth.
     """
     def build_hierarchy(self, title: str, elements: List[Dict[str, Any]]) -> Dict[str, Any]:
+        import warnings
+        from collections import defaultdict
+
         # 1. Merge page-boundary splits
         cleaned = self._merge_page_boundaries(elements)
 
         # 2. Group list items
         grouped = self._group_list_items(cleaned)
 
-        # 3. Build stack-based nested tree
+        # 3. Build robust nested tree
         root = {
             "type": "document",
             "title": title,
             "content": "",
             "level": 0,
             "key": "root",
+            "parent_key": None,
             "children": []
         }
 
+        node_by_key = {"root": root}
+        
+        # Track counts of leaf child types per parent key to generate unique, stable keys
+        leaf_counters = defaultdict(lambda: defaultdict(int))
+        
+        # Keep track of duplicate key counts to ensure uniqueness
+        dup_counters = defaultdict(int)
+
+        # Initialize stack with root
         stack = [root]
 
         for el in grouped:
             if el["type"] == "heading":
-                # Pop stack until the top is a heading with a lower level
-                while len(stack) > 1 and stack[-1]["level"] >= el["level"]:
-                    stack.pop()
+                key = el["key"]
+                level = el["level"]
+                
+                # Identify the theoretical parent key
+                if "." in key:
+                    # e.g., "2.1.3" -> "2.1"
+                    parent_key = ".".join(key.split(".")[:-1])
+                else:
+                    # e.g., "2" -> "root"
+                    parent_key = "root"
 
+                parent_key_actually_used = parent_key
+
+                # Validate if the parent key exists
+                if parent_key in node_by_key:
+                    parent_node = node_by_key[parent_key]
+                    # Check for level jumps (e.g. H1 to H3)
+                    if level > parent_node["level"] + 1:
+                        msg = (
+                            f"Level jump detected: heading '{el['content']}' (key: '{key}', level {level}) "
+                            f"directly follows parent '{parent_node['content'] or 'root'}' (level {parent_node['level']})."
+                        )
+                        warnings.warn(msg, UserWarning)
+                        logger.warning(msg)
+                else:
+                    # Hierarchy cannot be determined confidently due to missing parent key!
+                    msg = (
+                        f"Hierarchy mismatch: heading '{el['content']}' (key: '{key}') "
+                        f"expects parent key '{parent_key}', but '{parent_key}' was not found in the document tree."
+                    )
+                    warnings.warn(msg, UserWarning)
+                    logger.warning(msg)
+                    
+                    # Instead of guessing an incorrect active parent, find the longest existing prefix
+                    fallback_parent_key = "root"
+                    if "." in key:
+                        parts = key.split(".")
+                        for i in range(len(parts) - 1, 0, -1):
+                            prefix = ".".join(parts[:i])
+                            if prefix in node_by_key:
+                                fallback_parent_key = prefix
+                                break
+                    
+                    parent_key_actually_used = fallback_parent_key
+                    parent_node = node_by_key[fallback_parent_key]
+
+                # Check for duplicate heading keys
+                if key in node_by_key:
+                    dup_counters[key] += 1
+                    unique_key = f"{key}_dup{dup_counters[key]}"
+                    msg = (
+                        f"Duplicate heading key detected: '{key}' (content: '{el['content']}') already exists. "
+                        f"Renaming to '{unique_key}' to ensure tree uniqueness."
+                    )
+                    warnings.warn(msg, UserWarning)
+                    logger.warning(msg)
+                    key = unique_key
+
+                # Create the heading node
                 node = {
                     "type": "heading",
                     "title": el["title"],
                     "content": el["content"],
-                    "level": el["level"],
-                    "key": el["key"],
+                    "level": level,
+                    "key": key,
+                    "parent_key": parent_key_actually_used,
                     "children": []
                 }
-                stack[-1]["children"].append(node)
-                stack.append(node)
+                
+                # Attach to the resolved parent node
+                parent_node["children"].append(node)
+                
+                # Register in the key map
+                node_by_key[key] = node
+                
+                # Update stack to reflect the path from root to this node
+                stack = self._get_ancestor_path(key, node_by_key)
+
             else:
                 # Leaf node: paragraph, table, list
+                # Leaf nodes always attach to the active heading at the top of the stack
+                active_parent = stack[-1]
+                parent_key = active_parent["key"]
+                
+                # Generate unique positional key for the leaf under its parent
+                node_type = el["type"]
+                count = leaf_counters[parent_key][node_type]
+                leaf_counters[parent_key][node_type] += 1
+                
+                leaf_key = f"{parent_key}_{node_type}"
+                if count > 0:
+                    leaf_key = f"{leaf_key}_{count}"
+                
                 node = {
-                    "type": el["type"],
-                    "title": el["type"].capitalize(),
+                    "type": node_type,
+                    "title": node_type.capitalize(),
                     "content": el["content"],
-                    "level": stack[-1]["level"] + 1,
-                    "key": f"{stack[-1]['key']}_{el['type']}",
+                    "level": active_parent["level"] + 1,
+                    "key": leaf_key,
+                    "parent_key": parent_key,
                     "children": []
                 }
-                stack[-1]["children"].append(node)
+                
+                active_parent["children"].append(node)
+                node_by_key[leaf_key] = node
 
         return root
+
+    def _get_ancestor_path(self, node_key: str, node_by_key: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        Traces back parent keys to construct a list of active ancestor nodes from root to node_key.
+        """
+        path = []
+        curr_key = node_key
+        while curr_key is not None and curr_key in node_by_key:
+            node = node_by_key[curr_key]
+            path.append(node)
+            curr_key = node.get("parent_key")
+        return list(reversed(path))
 
     def _merge_page_boundaries(self, elements: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         if not elements:
